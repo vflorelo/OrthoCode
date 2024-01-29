@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 import pandas as pd
-import sys
 count_tsv_file = "Orthogroups.GeneCount.tsv"
 excl_tsv_file  = "Orthogroups_UnassignedGenes.tsv"
 out_tsv_file   = "Orthogroups.FullGeneCount.tsv"
 mat_tsv_file   = "Orthogroups.Presence.tsv"
-count_df=pd.read_csv(count_tsv_file,sep="\t").fillna("")
-excl_df=pd.read_csv(excl_tsv_file,sep="\t",dtype=str).fillna("")
+count_df = pd.read_csv(count_tsv_file,sep="\t").fillna("")
+excl_df  = pd.read_csv(excl_tsv_file, sep="\t",dtype=str).fillna("")
 species_list = list(excl_df.columns[1:])
 for species in species_list:
     excl_df[species] = excl_df[species].apply(lambda x: 1 if len(x) > 0 else 0)

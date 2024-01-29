@@ -1,31 +1,21 @@
 #!/usr/bin/python3
 import pandas as pd
 import sys
-mat_tsv_file = sys.argv[1]
-out_tsv_file = sys.argv[2]
-mat_df       = pd.read_csv(mat_tsv_file,sep="\t").fillna("")
-species_list = ['Plasmodium_falciparum_3D7',
-                'Plasmodium_reichenowi_CDC',
-                'Plasmodium_gaboni_SY75',
-                'Plasmodium_berghei_ANKA',
-                'Plasmodium_yoelii_yoelii_17X',
-                'Plasmodium_chabaudi_chabaudi',
-                'Hepatocystis_2019',
-                'Plasmodium_knowlesi_H',
-                'Plasmodium_vivax_P01',
-                'Plasmodium_gallinaceum_8A',
-                'Haemoproteus_tartakovskyi_SISKIN1',
-                'Toxoplasma_gondii_ME49',
-                'Neospora_caninum_Liverpool2019',
-                'Sarcocystis_neurona_SN3',
-                'Eimeria_tenella_Houghton2021',
-                'Cyclospora_cayetanensis_CHN_HEN01',
-                'Theileria_annulata_Ankara',
-                'Babesia_bovis_T2Bo']
+tsv_in_file  = sys.argv[1] # presence matrix
+tsv_out_file = sys.argv[2]
+sp_list_file = sys.argv[3]
+sp_list_fh   = open(sp_list_file, "r") 
+sp_list_data = sp_list_fh.read() 
+species_list = sp_list_data.split("\n") 
+species_list = list(filter(None, species_list))
+sp_list_fh.close() 
+presence_df  = pd.read_csv(tsv_in_file,sep="\t").fillna("")
 counter=0
+
 for species in species_list:
+
     placement = 2**counter
     counter  += 1
-    mat_df[species] = mat_df[species] * placement
-mat_df["Total"] = mat_df[species_list].sum(axis=1)
-mat_df.to_csv(out_tsv_file,sep="\t",index=False)
+    presence_df[species] = presence_df[species] * placement
+presence_df["Total"] = presence_df[species_list].sum(axis=1)
+presence_df.to_csv(tsv_out_file,sep="\t",index=False)
