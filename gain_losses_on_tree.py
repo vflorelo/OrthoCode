@@ -7,8 +7,8 @@ import re
 #enc_og_tsv    = sys.argv[2]
 #og_codes      = sys.argv[3]
 #sp_list_file  = sys.argv[4]
-tree_file     = "SpeciesTree.ultra.nwk"
-svg_file      = "SpeciesTree.ultra.svg"
+tree_file     = "species_tree.ultra.nwk"
+svg_file      = "species_tree.ultra.ete.svg"
 enc_og_tsv    = "Orthogroups.Encoded.tsv"
 og_codes      = "og_codes.txt"
 sp_list_file  = "species_list"
@@ -17,8 +17,12 @@ sp_list_data  = sp_list_fh.read()
 species_list  = sp_list_data.split("\n") 
 species_list  = list(filter(None, species_list))
 species_count = len(species_list)
+root_species  = "Cryptosporidium_parvum"
 sp_list_fh.close()
 tree        = Tree(tree_file)
+tree.set_outgroup(root_species)
+tree.convert_to_ultrametric()
+tree.ladderize()
 enc_og_df   = pd.read_csv(enc_og_tsv,sep="\t",dtype=str)
 og_codes_df = pd.read_csv(og_codes,  sep="\t",dtype=str)
 def get_matrix_code(matrix_str,matrix_type):
@@ -121,6 +125,7 @@ def node_layout(sub_node):
     faces.add_face_to_node(node_text,sub_node,0,position="branch-bottom")
 ts = TreeStyle()
 ts.layout_fn = node_layout
+ts.force_topology = True
 nstyle = NodeStyle()
 for n in tree.traverse():
     n.set_style(nstyle)
