@@ -10,7 +10,7 @@ import re
 tree_file     = "species_tree.ultra.nwk"
 svg_file      = "species_tree.ultra.ete.svg"
 enc_og_tsv    = "Orthogroups.Encoded.tsv"
-og_codes      = "og_codes.txt"
+og_codes      = "og_codes.tsv"
 sp_list_file  = "species_list"
 sp_list_fh    = open(sp_list_file, "r") 
 sp_list_data  = sp_list_fh.read() 
