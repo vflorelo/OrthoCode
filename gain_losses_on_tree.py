@@ -3,6 +3,7 @@ import pandas as pd
 from ete3 import Tree, TreeStyle, NodeStyle, faces
 import sys
 import re
+root_species  = sys.argv[1]
 tree_file     = "species_tree.ultra.nwk"
 svg_file      = "species_tree.ultra.ete.svg"
 enc_og_tsv    = "Orthogroups.Encoded.tsv"
@@ -13,7 +14,6 @@ sp_list_data  = sp_list_fh.read()
 species_list  = sp_list_data.split("\n") 
 species_list  = list(filter(None, species_list))
 species_count = len(species_list)
-root_species  = "Cryptosporidium_parvum"
 sp_list_fh.close()
 tree        = Tree(tree_file)
 tree.set_outgroup(root_species)
