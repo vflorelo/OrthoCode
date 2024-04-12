@@ -3,10 +3,6 @@ import pandas as pd
 from ete3 import Tree, TreeStyle, NodeStyle, faces
 import sys
 import re
-#tree_file     = sys.argv[1]
-#enc_og_tsv    = sys.argv[2]
-#og_codes      = sys.argv[3]
-#sp_list_file  = sys.argv[4]
 tree_file     = "species_tree.ultra.nwk"
 svg_file      = "species_tree.ultra.ete.svg"
 enc_og_tsv    = "Orthogroups.Encoded.tsv"
@@ -51,10 +47,6 @@ def get_matrix_code(matrix_str,matrix_type):
 counter = 0
 for n in tree.traverse():
     counter += 1
-    core_gain_file = "lists/node_"+str(counter)+"_core_gain.idlist"
-    excl_gain_file = "lists/node_"+str(counter)+"_excl_gain.idlist"
-    core_loss_file = "lists/node_"+str(counter)+"_core_loss.idlist"
-    excl_loss_file = "lists/node_"+str(counter)+"_excl_loss.idlist"
     excl_gain_base_list = ["0"] * species_count
     core_gain_base_list = ["0"] * species_count
     excl_loss_base_list = ["1"] * species_count
@@ -89,22 +81,6 @@ for n in tree.traverse():
     excl_gain_index  = enc_og_df["Total"] == str(excl_gain_code)
     core_loss_index  = enc_og_df["Total"].isin(core_loss_code)
     excl_loss_index  = enc_og_df["Total"] == str(excl_loss_code)
-    core_gain_list   = enc_og_df[core_gain_index]["Orthogroup"].values.flatten().tolist()
-    excl_gain_list   = enc_og_df[excl_gain_index]["Orthogroup"].values.flatten().tolist()
-    core_loss_list   = enc_og_df[core_loss_index]["Orthogroup"].values.flatten().tolist()
-    excl_loss_list   = enc_og_df[excl_loss_index]["Orthogroup"].values.flatten().tolist()
-    with open(core_gain_file, 'w') as f:
-        for gain in core_gain_list:
-            f.write(f"{gain}\n")
-    with open(excl_gain_file, 'w') as f:
-        for gain in excl_gain_list:
-            f.write(f"{gain}\n")
-    with open(core_loss_file, 'w') as f:
-        for loss in core_loss_list:
-            f.write(f"{loss}\n")
-    with open(excl_loss_file, 'w') as f:
-        for loss in excl_loss_list:
-            f.write(f"{loss}\n")
     core_gain        = len(enc_og_df[core_gain_index])
     excl_gain        = len(enc_og_df[excl_gain_index])
     core_loss        = len(enc_og_df[core_loss_index])
@@ -120,7 +96,7 @@ def node_layout(sub_node):
     core_loss = str(sub_node.core_loss)
     excl_loss = str(sub_node.excl_loss)
     nid       = str(sub_node.nid)
-    node_str  = nid+" (/++"+core_gain+"/+"+excl_gain+"/--"+core_loss+"/-"+excl_loss+")"
+    node_str  = nid+" (\n++"+core_gain+"\n+"+excl_gain+"\n--"+core_loss+"\n-"+excl_loss+")"
     node_text = faces.TextFace(node_str,fsize=20)
     faces.add_face_to_node(node_text,sub_node,0,position="branch-bottom")
 ts = TreeStyle()
