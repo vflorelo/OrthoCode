@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 import pandas as pd
-count_tsv_file = "Orthogroups.GeneCount.tsv"
-excl_tsv_file  = "Orthogroups_UnassignedGenes.tsv"
-out_tsv_file   = "Orthogroups.FullGeneCount.tsv"
-mat_tsv_file   = "Orthogroups.Presence.tsv"
-count_df = pd.read_csv(count_tsv_file,sep="\t").fillna("")
-excl_df  = pd.read_csv(excl_tsv_file, sep="\t",dtype=str).fillna("")
-species_list = list(excl_df.columns[1:])
+import sys
+counts_file      = sys.argv[1]
+unassigned_file  = sys.argv[2]
+full_counts_file = "Orthogroups.FullGeneCount.tsv"
+presence_file    = "Orthogroups.Presence.tsv"
+counts_df        = pd.read_csv(counts_file,sep="\t").fillna("")
+unassigned_df    = pd.read_csv(unassigned_file,sep="\t",dtype=str).fillna("")
+species_list     = list(unassigned_df.columns[1:])
 for species in species_list:
-    excl_df[species] = excl_df[species].apply(lambda x: 1 if len(x) > 0 else 0)
-join_df = pd.concat([count_df,excl_df],ignore_index=True)
+    unassigned_df[species] = unassigned_df[species].apply(lambda x: 1 if len(x) > 0 else 0)
+join_df = pd.concat([counts_df,unassigned_df],ignore_index=True)
 join_df["Total"] = join_df[species_list].sum(axis=1)
-join_df.to_csv(out_tsv_file,sep="\t",index=False)
+join_df.to_csv(full_counts_file,sep="\t",index=False)
 for species in species_list:
     join_df[species] = join_df[species].apply(lambda x: 1 if x > 0 else 0)
-join_df.drop(columns=["Total"]).to_csv(mat_tsv_file,sep="\t",index=False)
+join_df.drop(columns=["Total"]).to_csv(presence_file,sep="\t",index=False)

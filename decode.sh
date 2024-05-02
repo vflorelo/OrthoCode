@@ -3,7 +3,7 @@ code=$1
 species_list_file=$2
 species_list=$(cat ${species_list_file})
 num_taxa=$(cat ${species_list_file} | sort -V | uniq | grep -v ^$ | wc -l)
-mat_str=$(echo "obase=2; ibase=10; ${code}" | bc | rev | perl -pe 's/\n//')
+mat_str=$(echo "obase=2; ibase=10; ${code}" | bc | rev | sed -e 's/\n//')
 mat_len=$(echo "${mat_str}" | awk '{print length($1)}')
 if [ "${mat_len}" -lt "${num_taxa}" ]
 then

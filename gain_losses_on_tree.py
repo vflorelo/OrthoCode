@@ -96,7 +96,7 @@ def node_layout(sub_node):
     core_loss = str(sub_node.core_loss)
     excl_loss = str(sub_node.excl_loss)
     nid       = str(sub_node.nid)
-    node_str  = nid+" (\n++"+core_gain+"\n+"+excl_gain+"\n--"+core_loss+"\n-"+excl_loss+")"
+    node_str  = nid+" (++"+core_gain+"/+"+excl_gain+"/--"+core_loss+"/-"+excl_loss+")"
     node_text = faces.TextFace(node_str,fsize=20)
     faces.add_face_to_node(node_text,sub_node,0,position="branch-bottom")
 ts = TreeStyle()
