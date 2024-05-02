@@ -106,7 +106,8 @@ else
 fi
 
 echo "Creating orthogroup code index"
-code_list=$(tail -n+2 "${encoded_file}" | sort -n | uniq )
+code_column=$(get_tsv_headers.sh "${encoded_file}" | awk 'BEGIN{FS=":"}{if($2=="Code"){print $1}}')
+code_list=$(tail -n+2 "${encoded_file}" | cut -f${code_column} | sort -n | uniq )
 echo "${code_list}" | awk -v species_list="${species_list}" '{print "decode.sh",$1,species_list}' | parallel -j ${threads} > codes.tmp.tsv 2>> ${err_file}
 exit_code=$?
 if [ "${exit_code}" -gt 0 ]

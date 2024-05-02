@@ -14,5 +14,5 @@ for species in species_list:
     placement = 2**counter
     counter  += 1
     presence_df[species] = presence_df[species] * placement
-presence_df["Total"] = presence_df[species_list].sum(axis=1)
+presence_df["Code"] = presence_df[species_list].sum(axis=1)
 presence_df.to_csv("Orthogroups.Encoded.tsv",sep="\t",index=False)
