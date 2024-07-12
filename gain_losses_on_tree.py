@@ -46,6 +46,10 @@ def get_matrix_code(matrix_str,matrix_type):
     return code_list
 counter = 0
 for n in tree.traverse():
+    core_gain_file = "lists/"+lineage + "_core_gains.idlist"
+    excl_gain_file = "lists/"+lineage + "_excl_gains.idlist"
+    core_loss_file = "lists/"+lineage + "_core_losses.idlist"
+    excl_loss_file = "lists/"+lineage + "_excl_losses.idlist"
     counter += 1
     excl_gain_base_list = ["0"] * species_count
     core_gain_base_list = ["0"] * species_count
@@ -90,6 +94,10 @@ for n in tree.traverse():
     n.add_feature("excl_gain",excl_gain)
     n.add_feature("core_loss",core_loss)
     n.add_feature("excl_loss",excl_loss)
+    enc_og_df[core_gain_index]["Orthogroup"].to_csv(core_gain_file,header=False,index=False)
+    enc_og_df[excl_gain_index]["Orthogroup"].to_csv(excl_gain_file,header=False,index=False)
+    enc_og_df[core_loss_index]["Orthogroup"].to_csv(core_loss_file,header=False,index=False)
+    enc_og_df[excl_loss_index]["Orthogroup"].to_csv(excl_loss_file,header=False,index=False)
 def node_layout(sub_node):
     core_gain = str(sub_node.core_gain)
     excl_gain = str(sub_node.excl_gain)
