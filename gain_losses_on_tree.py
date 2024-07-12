@@ -47,10 +47,10 @@ def get_matrix_code(matrix_str,matrix_type):
 counter = 0
 for n in tree.traverse():
     counter += 1
-    core_gain_file = "lists/"+counter + "_core_gains.idlist"
-    excl_gain_file = "lists/"+counter + "_excl_gains.idlist"
-    core_loss_file = "lists/"+counter + "_core_losses.idlist"
-    excl_loss_file = "lists/"+counter + "_excl_losses.idlist"
+    core_gain_file = "lists/"+str(counter) + "_core_gains.idlist"
+    excl_gain_file = "lists/"+str(counter) + "_excl_gains.idlist"
+    core_loss_file = "lists/"+str(counter) + "_core_losses.idlist"
+    excl_loss_file = "lists/"+str(counter) + "_excl_losses.idlist"
     excl_gain_base_list = ["0"] * species_count
     core_gain_base_list = ["0"] * species_count
     excl_loss_base_list = ["1"] * species_count
